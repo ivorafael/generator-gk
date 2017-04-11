@@ -1,0 +1,4 @@
+@import '<%= folderLevels %>../../../common/scss/base.scss';
+
+.gk-<%= kebabCaseName %> {
+}

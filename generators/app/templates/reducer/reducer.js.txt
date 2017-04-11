@@ -1,0 +1,76 @@
+export default function reducer( state = {
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  someValue: false,
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  <%= camelCaseName %>: {
+    data: null,
+    fetching: false,
+    fetched: false,
+    error: null
+  }
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+}, action ) {
+  switch ( action.type ) {
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+
+    case "SET_VALUE": {
+      return {
+        ...state,
+        someValue: action.payload
+      }
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    case "FETCH_<%= upperCaseName %>": {
+      return {
+        ...state,
+        <%= camelCaseName %>: {
+          data: null,
+          fetching: true,
+          fetched: false,
+          error: null
+        }
+      }
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+
+    case "FETCH_<%= upperCaseName %>_SUCCESS": {
+      return {
+        ...state,
+        <%= camelCaseName %>: {
+          data: action.payload,
+          fetching: false,
+          fetched: true,
+          error: null
+        }
+      }
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    case "FETCH_<%= upperCaseName %>_ERROR": {
+      return {
+        ...state,
+        <%= camelCaseName %>: {
+          data: null,
+          fetching: false,
+          fetched: false,
+          error: action.payload
+        }
+      }
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  }
+
+  return state
+}

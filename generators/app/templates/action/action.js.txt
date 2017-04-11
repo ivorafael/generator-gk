@@ -1,0 +1,41 @@
+import axios from 'axios'
+import Env from '<%= folderLevels %>../../helpers/env'
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+export function fetch<%= name %>() {
+  return function ( dispatch ) {
+    dispatch( { type: 'FETCH_<%= upperCaseName %>' })
+
+    return new Promise(( resolve, reject ) => {
+      axios.get( Env.getUrl( '/endpoint' ) ).then(( response ) => {
+
+        dispatch( { type: 'FETCH_<%= upperCaseName %>_SUCCESS', payload: response.data });
+        resolve( response.data );
+
+      }).catch(( error ) => {
+
+        dispatch( { type: 'FETCH_<%= upperCaseName %>_ERROR', payload: error });
+        reject( error );
+
+      });
+    })
+  }
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+
+export function setValue( value ) {
+  return function ( dispatch ) {
+    return new Promise(( resolve, reject ) => {
+      dispatch( {
+        type: 'SET_VALUE',
+        payload: value
+      } );
+
+      resolve();
+    } );
+  }
+}
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,0 +1,31 @@
+import React from 'react'
+import GkSection from '<%= folderLevels %>../section'
+import './<%= kebabCaseName %>.scss'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+class Gk<%= name %> extends GkSection {
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  constructor( props ) {
+    super( props );
+    this.displayName = 'Gk<%= name %>';
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  render() {
+    return (
+
+      <section className="gk-<%= kebabCaseName %> gk-section">
+      </section>
+
+    )
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+}
+
+export default Gk<%= name %>

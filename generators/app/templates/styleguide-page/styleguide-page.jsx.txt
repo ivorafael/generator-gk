@@ -1,0 +1,50 @@
+import React from 'react'
+
+import $TableProperties from '../components/table-properties'
+import $CodeViewer from '../components/code-viewer'
+import $Section from '../components/section'
+import $Module from '../components/module'
+import $Page from './page'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+class $<%= name %> extends $Page {
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  constructor( props ) {
+    super( props );
+    this.displayName = '$<%= name %>';
+
+    this.sourceCode = `// Source code`;
+
+    this.propList = [
+      [ 'label', 'string', '', 'Label.' ]
+    ]
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  render() {
+    return (
+      <$Section title="<%= name %>">
+
+        <$Module title="Module Title">
+          {/* Component goes here */ }
+          <$CodeViewer sourceCode={ this.sourceCode } />
+        </$Module>
+
+        <$Module title="Properties">
+          <$TableProperties propList={ this.propList } />
+        </$Module>
+
+      </$Section>
+
+    );
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+}
+
+export default $<%= name %>
