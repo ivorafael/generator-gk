@@ -8,7 +8,7 @@ import $Page from './page'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-class $<%= name %> extends $Page {
+export default class $<%= name %> extends $Page {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -46,5 +46,3 @@ class $<%= name %> extends $Page {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 }
-
-export default $<%= name %>

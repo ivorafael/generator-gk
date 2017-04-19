@@ -4,7 +4,7 @@ import './<%= kebabCaseName %>.scss'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-class Gk<%= name %> extends GkModule {
+export default class Gk<%= name %> extends GkModule {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -27,5 +27,3 @@ class Gk<%= name %> extends GkModule {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 }
-
-export default Gk<%= name %>
