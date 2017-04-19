@@ -1,4 +1,13 @@
 @import '<%= folderLevels %>../../common/scss/base.scss';
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 .gk-<%= kebabCaseName %> {
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+@media screen and (min-width: $layout-breakpoint){
+  .gk-<%= kebabCaseName %> {
+  }  
 }
