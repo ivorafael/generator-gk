@@ -29,7 +29,7 @@ export default class Gk<%= name %> extends GkPage {
   render() {
     return (
 
-      <div className="gk-<%= kebabCaseName %> gk-page">
+      <div className={`gk-<%= kebabCaseName %> gk-page ${ this.state.beforeEnter ? 'gk-page--before-enter' : '' }`}>
       </div>
 
     );
