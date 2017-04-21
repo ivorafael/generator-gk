@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { simpleInstance, secureInstance } from '<%= folderLevels %>../../helpers/ajax'
 import Env from '<%= folderLevels %>../../helpers/env'
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -7,18 +7,16 @@ export function fetch<%= name %>() {
   return function ( dispatch ) {
     dispatch( { type: 'FETCH_<%= upperCaseName %>' })
 
-    return new Promise(( resolve, reject ) => {
-      axios.get( Env.getUrl( '/endpoint' ) ).then(( response ) => {
+    simpleInstance.get( Env.getUrl( '/endpoint' ) ).then(( response ) => {
 
-        dispatch( { type: 'FETCH_<%= upperCaseName %>_SUCCESS', payload: response.data });
-        resolve( response.data );
+      dispatch( { type: 'FETCH_<%= upperCaseName %>_SUCCESS', payload: response.data });
+      return response;
 
-      }).catch(( error ) => {
+    }).catch(( error ) => {
 
-        dispatch( { type: 'FETCH_<%= upperCaseName %>_ERROR', payload: error });
-        reject( error );
+      dispatch( { type: 'FETCH_<%= upperCaseName %>_ERROR', payload: error });
+      return error;
 
-      });
     })
   }
 }
