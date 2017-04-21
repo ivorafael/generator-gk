@@ -23,7 +23,7 @@ module.exports = class extends Generator {
     }, {
       type: 'input',
       name: 'itemName',
-      message: 'Provide a name (ex: Textfield):',
+      message: 'Provide a name (ex: Home, Textfield, Buttons/SomeButton):',
       validate: ( value ) => {
         return /^[A-Z][a-zA-Z0-9\/]*$/.test( value ) || 'Invalid name.'
       }
@@ -130,14 +130,16 @@ module.exports = class extends Generator {
       }
     )
 
-    this.fs.copyTpl(
-      this.templatePath( `${ kind }/${ kind }.test.js.txt` ),
-      this.destinationPath( `${ basePath }/platform/${ kind }s/${ data.destination }/${ data.kebabCaseName }.test.js` ), {
-        name: data.inputName,
-        kebabCaseName: data.kebabCaseName,
-        folderLevels: data.folderLevels
-      }
-    )
+    if ( kind.toLowerCase() != 'page' ) {
+      this.fs.copyTpl(
+        this.templatePath( `${ kind }/${ kind }.test.js.txt` ),
+        this.destinationPath( `${ basePath }/platform/${ kind }s/${ data.destination }/${ data.kebabCaseName }.test.js` ), {
+          name: data.inputName,
+          kebabCaseName: data.kebabCaseName,
+          folderLevels: data.folderLevels
+        }
+      )
+    }
 
     this.fs.copyTpl(
       this.templatePath( `${ kind }/${ kind }.scss.txt` ),

@@ -1,21 +1,22 @@
 @import '<%= folderLevels %>../../../common/scss/base.scss';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 .gk-<%= kebabCaseName %> {
-  /*
-  @extend .gk-text;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   max-width: $layout-breakpoint;
   margin: 0 auto;
-  */
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+media screen and (min-width: $ipad-portrait-breakpoint){
+  .gk-<%= kebabCaseName %> {
+  }  
+}
 
-@media screen and (min-width: $layout-breakpoint){
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+media screen and (min-width: $layout-breakpoint){
   .gk-<%= kebabCaseName %> {
   }  
 }
