@@ -10,13 +10,13 @@
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-media screen and (min-width: $ipad-portrait-breakpoint){
+@media screen and (min-width: $ipad-portrait-breakpoint){
   .gk-<%= kebabCaseName %> {
   }  
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-media screen and (min-width: $layout-breakpoint){
+@media screen and (min-width: $layout-breakpoint){
   .gk-<%= kebabCaseName %> {
   }  
 }
