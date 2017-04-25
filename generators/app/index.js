@@ -7,50 +7,77 @@ const snakeCase = require( 'lodash/snakeCase' );
 const camelCase = require( 'lodash/camelCase' );
 const basePath = 'frontend/source'
 
+const mainPrompt = [
+  {
+    type: 'list',
+    name: 'actionType',
+    message: 'What do you like to create?',
+    choices: [ 'Component', 'Module', 'Section', 'Page', 'Action', 'Reducer', 'Action & Reducer', 'Styleguide page' ]
+  }, {
+    type: 'input',
+    name: 'itemName',
+    message: 'Provide a name (ex: Home, Textfield, Buttons/SomeButton):',
+    validate: ( value ) => {
+      return /^[A-Z][a-zA-Z0-9\/]*$/.test( value ) || 'Invalid name.'
+    }
+  }
+];
+
+const secondaryPrompt = [
+  {
+    type: 'confirm',
+    name: 'includeSCSS',
+    message: 'Generate related stylesheet?',
+    default: true
+  }, {
+    type: 'confirm',
+    name: 'includeTest',
+    message: 'Generate related test?',
+    default: true
+  }
+]
+
+const pagePrompt = [
+  {
+    type: 'confirm',
+    name: 'includeRedux',
+    message: 'Generate related action and reducer?',
+    default: false
+  }, {
+    type: 'confirm',
+    name: 'includeStyleguide',
+    message: 'Generate related styleguide page?',
+    default: false
+  }
+]
+
 module.exports = class extends Generator {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   prompting() {
-    // this.log( yosay(
-    //   'Welcome to the good ' + chalk.red( 'generator-gk' ) + ' generator!'
-    // ) );
-
-    const mainPrompt = [ {
-      type: 'list',
-      name: 'actionType',
-      message: 'What do you like to create?',
-      choices: [ 'Component', 'Module', 'Section', 'Page', 'Action', 'Reducer', 'Action & Reducer', 'Styleguide page' ]
-    }, {
-      type: 'input',
-      name: 'itemName',
-      message: 'Provide a name (ex: Home, Textfield, Buttons/SomeButton):',
-      validate: ( value ) => {
-        return /^[A-Z][a-zA-Z0-9\/]*$/.test( value ) || 'Invalid name.'
-      }
-    }];
-
-    const pagePrompt = [ {
-      type: 'confirm',
-      name: 'includeRedux',
-      message: 'Generate related action and reducer?',
-      default: false
-    }, {
-      type: 'confirm',
-      name: 'includeStyleguide',
-      message: 'Generate related styleguide page?',
-      default: false
-    }]
-
     return this.prompt( mainPrompt ).then( props => {
+      this.props = props;
 
-      if ( props.actionType == 'Page' ) {
-        return this.prompt( pagePrompt ).then( _props => {
-          this.props = Object.assign( {}, props, _props );
-        } );
+      let promises = [];
+
+      if ( [ 'Component', 'Module', 'Section', 'Page' ].indexOf( props.actionType ) >= 0 ) {
+        return this.prompt( secondaryPrompt ).then( _props => {
+          this.props = Object.assign( {}, this.props, _props );
+
+          if ( props.actionType == 'Page' ) return this._pagePrompt();
+        } )
       }
 
-      this.props = props;
+      if ( props.actionType == 'Page' ) return this._pagePrompt();
     } );
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  _pagePrompt() {
+    return this.prompt( pagePrompt ).then( _props => {
+      this.props = Object.assign( {}, this.props, _props );
+    } )
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -95,25 +122,29 @@ module.exports = class extends Generator {
         kebabCaseName: data.kebabCaseName,
         folderLevels: data.folderLevels
       }
-    );
+    )
 
-    this.fs.copyTpl(
-      this.templatePath( 'component/component.test.js.txt' ),
-      this.destinationPath( `${ basePath }/components/${ data.destination }/${ data.kebabCaseName }.test.js` ), {
-        name: data.inputName,
-        kebabCaseName: data.kebabCaseName,
-        folderLevels: data.folderLevels
-      }
-    );
+    if ( this.props.includeTest ) {
+      this.fs.copyTpl(
+        this.templatePath( 'component/component.test.js.txt' ),
+        this.destinationPath( `${ basePath }/components/${ data.destination }/${ data.kebabCaseName }.test.js` ), {
+          name: data.inputName,
+          kebabCaseName: data.kebabCaseName,
+          folderLevels: data.folderLevels
+        }
+      )
+    }
 
-    this.fs.copyTpl(
-      this.templatePath( 'component/component.scss.txt' ),
-      this.destinationPath( `${ basePath }/components/${ data.destination }/${ data.kebabCaseName }.scss` ), {
-        name: data.inputName,
-        kebabCaseName: data.kebabCaseName,
-        folderLevels: data.folderLevels
-      }
-    );
+    if ( this.props.includeSCSS ) {
+      this.fs.copyTpl(
+        this.templatePath( 'component/component.scss.txt' ),
+        this.destinationPath( `${ basePath }/components/${ data.destination }/${ data.kebabCaseName }.scss` ), {
+          name: data.inputName,
+          kebabCaseName: data.kebabCaseName,
+          folderLevels: data.folderLevels
+        }
+      )
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -130,7 +161,7 @@ module.exports = class extends Generator {
       }
     )
 
-    if ( kind.toLowerCase() != 'page' ) {
+    if ( this.props.includeTest ) {
       this.fs.copyTpl(
         this.templatePath( `${ kind }/${ kind }.test.js.txt` ),
         this.destinationPath( `${ basePath }/platform/${ kind }s/${ data.destination }/${ data.kebabCaseName }.test.js` ), {
@@ -141,14 +172,16 @@ module.exports = class extends Generator {
       )
     }
 
-    this.fs.copyTpl(
-      this.templatePath( `${ kind }/${ kind }.scss.txt` ),
-      this.destinationPath( `${ basePath }/platform/${ kind }s/${ data.destination }/${ data.kebabCaseName }.scss` ), {
-        name: data.inputName,
-        kebabCaseName: data.kebabCaseName,
-        folderLevels: data.folderLevels
-      }
-    );
+    if ( this.props.includeSCSS ) {
+      this.fs.copyTpl(
+        this.templatePath( `${ kind }/${ kind }.scss.txt` ),
+        this.destinationPath( `${ basePath }/platform/${ kind }s/${ data.destination }/${ data.kebabCaseName }.scss` ), {
+          name: data.inputName,
+          kebabCaseName: data.kebabCaseName,
+          folderLevels: data.folderLevels
+        }
+      )
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
