@@ -7,7 +7,7 @@ export function fetch<%= name %>() {
   return function ( dispatch ) {
     dispatch( { type: 'FETCH_<%= upperCaseName %>' })
 
-    simpleInstance.get( Env.getUrl( '/endpoint' ) ).then(( response ) => {
+    return simpleInstance.get( Env.getUrl( '/endpoint' ) ).then(( response ) => {
 
       dispatch( { type: 'FETCH_<%= upperCaseName %>_SUCCESS', payload: response.data });
       return response;
