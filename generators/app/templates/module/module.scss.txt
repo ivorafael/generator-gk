@@ -1,4 +1,4 @@
-@import '<%= folderLevels %>../../../common/scss/base.scss';
+@import '<%= folderLevels %>../../assets/scss/base.scss';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 .gk-<%= kebabCaseName %> {

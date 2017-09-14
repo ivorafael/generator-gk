@@ -1,6 +1,17 @@
 import React from 'react'
-import GkSection from '<%= folderLevels %>../section'
+import { connect } from 'react-redux'
+
+import store from '<%= folderLevels %>../../store'
+
 import './<%= kebabCaseName %>.scss'
+import GkSection from '<%= folderLevels %>../section'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+@connect(( store ) => {
+  return {
+  }
+} )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

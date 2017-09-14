@@ -1,0 +1,15 @@
+import React from 'react'
+import './<%= kebabCaseName %>.scss'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+const Gk<%= name %> = ( { data } ) => (
+  
+  <div className="gk-<%= kebabCaseName %> gk-component">
+  </div>
+  
+)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+export default Gk<%= name %>

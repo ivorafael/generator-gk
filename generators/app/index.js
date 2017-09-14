@@ -12,7 +12,7 @@ const mainPrompt = [
     type: 'list',
     name: 'actionType',
     message: 'What do you like to create?',
-    choices: [ 'Component', 'Module', 'Section', 'Page', 'Action', 'Reducer', 'Action & Reducer', 'Styleguide page' ]
+    choices: [ 'Stateless Component', 'Component', 'Module', 'Section', 'Page', 'Model', 'Action', 'Reducer', 'Action & Reducer' ]
   }, {
     type: 'input',
     name: 'itemName',
@@ -43,11 +43,6 @@ const pagePrompt = [
     name: 'includeRedux',
     message: 'Generate related action and reducer?',
     default: false
-  }, {
-    type: 'confirm',
-    name: 'includeStyleguide',
-    message: 'Generate related styleguide page?',
-    default: false
   }
 ]
 
@@ -60,15 +55,15 @@ module.exports = class extends Generator {
 
       let promises = [];
 
-      if ( [ 'Component', 'Module', 'Section', 'Page' ].indexOf( props.actionType ) >= 0 ) {
+      if ( [ 'Stateless Component', 'Component', 'Module', 'Section', 'Page' ].indexOf( props.actionType ) >= 0 ) {
         return this.prompt( secondaryPrompt ).then( _props => {
           this.props = Object.assign( {}, this.props, _props );
 
-          if ( props.actionType == 'Page' ) return this._pagePrompt();
+          if ( [ 'Section', 'Page' ].indexOf( props.actionType ) >= 0 ) return this._pagePrompt();
         } )
       }
 
-      if ( props.actionType == 'Page' ) return this._pagePrompt();
+      if ( [ 'Section', 'Page' ].indexOf( props.actionType ) >= 0 ) return this._pagePrompt();
     } );
   }
 
@@ -92,8 +87,8 @@ module.exports = class extends Generator {
       _itemName = _itemName.split( '/' );
 
       _length = ( _itemName.length - 1 );
-      _folderLevels = Array.from( { length: _length } ).map(( i ) => { return '../' } ).join( '' );
-      _destination = _itemName.map(( item ) => {
+      _folderLevels = Array.from( { length: _length } ).map( ( i ) => { return '../' } ).join( '' );
+      _destination = _itemName.map( ( item ) => {
         return kebabCase( item )
       } ).join( '/' );
 
@@ -116,7 +111,7 @@ module.exports = class extends Generator {
     const data = this._getData();
 
     this.fs.copyTpl(
-      this.templatePath( 'component/component.jsx.txt' ),
+      this.templatePath( this.props.actionType === 'Component' ? 'component/component.jsx.txt' : 'component/stateless-component.jsx.txt' ),
       this.destinationPath( `${ basePath }/components/${ data.destination }/${ data.kebabCaseName }.jsx` ), {
         name: data.inputName,
         kebabCaseName: data.kebabCaseName,
@@ -154,7 +149,7 @@ module.exports = class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath( `${ kind }/${ kind }.jsx.txt` ),
-      this.destinationPath( `${ basePath }/platform/${ kind }s/${ data.destination }/${ data.kebabCaseName }.jsx` ), {
+      this.destinationPath( `${ basePath }/${ kind }s/${ data.destination }/${ data.kebabCaseName }.jsx` ), {
         name: data.inputName,
         kebabCaseName: data.kebabCaseName,
         folderLevels: data.folderLevels
@@ -164,7 +159,7 @@ module.exports = class extends Generator {
     if ( this.props.includeTest ) {
       this.fs.copyTpl(
         this.templatePath( `${ kind }/${ kind }.test.js.txt` ),
-        this.destinationPath( `${ basePath }/platform/${ kind }s/${ data.destination }/${ data.kebabCaseName }.test.js` ), {
+        this.destinationPath( `${ basePath }/${ kind }s/${ data.destination }/${ data.kebabCaseName }.test.js` ), {
           name: data.inputName,
           kebabCaseName: data.kebabCaseName,
           folderLevels: data.folderLevels
@@ -175,13 +170,28 @@ module.exports = class extends Generator {
     if ( this.props.includeSCSS ) {
       this.fs.copyTpl(
         this.templatePath( `${ kind }/${ kind }.scss.txt` ),
-        this.destinationPath( `${ basePath }/platform/${ kind }s/${ data.destination }/${ data.kebabCaseName }.scss` ), {
+        this.destinationPath( `${ basePath }/${ kind }s/${ data.destination }/${ data.kebabCaseName }.scss` ), {
           name: data.inputName,
           kebabCaseName: data.kebabCaseName,
           folderLevels: data.folderLevels
         }
       )
     }
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  _createModel() {
+    const data = this._getData();
+
+    this.fs.copyTpl(
+      this.templatePath( 'model/model.js.txt' ),
+      this.destinationPath( `${ basePath }/models/${ data.kebabCaseName }.js` ), {
+        name: data.inputName,
+        upperCaseName: data.upperCaseName,
+        folderLevels: data.folderLevels
+      }
+    );
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -218,7 +228,7 @@ module.exports = class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath( 'action/action.js.txt' ),
-      this.destinationPath( `${ basePath }/platform/actions/${ data.kebabCaseName }.js` ), {
+      this.destinationPath( `${ basePath }/actions/${ data.kebabCaseName }.js` ), {
         name: data.inputName,
         upperCaseName: data.upperCaseName,
         folderLevels: data.folderLevels
@@ -233,23 +243,7 @@ module.exports = class extends Generator {
 
     this.fs.copyTpl(
       this.templatePath( 'reducer/reducer.js.txt' ),
-      this.destinationPath( `${ basePath }/platform/reducers/${ data.kebabCaseName }.js` ), {
-        camelCaseName: data.camelCaseName,
-        upperCaseName: data.upperCaseName,
-        folderLevels: data.folderLevels
-      }
-    );
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  _createStyleguidePage() {
-    const data = this._getData();
-
-    this.fs.copyTpl(
-      this.templatePath( 'styleguide-page/styleguide-page.jsx.txt' ),
-      this.destinationPath( `${ basePath }/styleguide/pages/${ data.kebabCaseName }.jsx` ), {
-        name: data.inputName,
+      this.destinationPath( `${ basePath }/reducers/${ data.kebabCaseName }.js` ), {
         camelCaseName: data.camelCaseName,
         upperCaseName: data.upperCaseName,
         folderLevels: data.folderLevels
@@ -260,7 +254,7 @@ module.exports = class extends Generator {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   writing() {
-    if ( this.props.actionType === 'Component' ) {
+    if ( this.props.actionType === 'Component' || this.props.actionType === 'Stateless Component' ) {
       this._createComponent();
     }
 
@@ -276,6 +270,10 @@ module.exports = class extends Generator {
       this._createPage();
     }
 
+    if ( this.props.actionType === 'Model' ) {
+      this._createModel();
+    }
+
     if ( this.props.actionType === 'Action' ) {
       this._createAction();
     }
@@ -287,10 +285,6 @@ module.exports = class extends Generator {
     if ( this.props.actionType === 'Action & Reducer' ) {
       this._createAction();
       this._createReducer();
-    }
-
-    if ( this.props.actionType === 'Styleguide page' ) {
-      this._createStyleguidePage();
     }
   }
 

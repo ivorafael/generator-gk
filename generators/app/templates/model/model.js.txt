@@ -1,0 +1,12 @@
+import GkModel from './model'
+
+export default class Gk<%= name %> extends GkModel {
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  constructor( props ) {
+    super( props );
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+}

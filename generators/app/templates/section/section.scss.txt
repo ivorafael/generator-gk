@@ -1,11 +1,7 @@
-@import '<%= folderLevels %>../../../common/scss/base.scss';
+@import '<%= folderLevels %>../../assets/scss/base.scss';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 .gk-<%= kebabCaseName %> {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: $layout-breakpoint;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,17 +1,17 @@
 import React from 'react'
-import GkComponent from '<%= folderLevels %>../component'
+import GkModule from '../module'
 
-import './<%= kebabCaseName %>.scss'
+import './module.scss'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default class Gk<%= name %> extends GkComponent {
+export default class GkModule extends GkModule {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   constructor( props ) {
     super( props );
-    this.displayName = 'Gk<%= name %>';
+    this.displayName = 'GkModule';
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19,7 +19,7 @@ export default class Gk<%= name %> extends GkComponent {
   render() {
     return (
 
-      <div className="gk-<%= kebabCaseName %> gk-component">
+      <div className="gk-module gk-module">
       </div>
 
     )

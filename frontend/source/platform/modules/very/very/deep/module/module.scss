@@ -1,17 +1,17 @@
-@import '<%= folderLevels %>../assets/scss/base.scss';
+@import '../../../../../assets/scss/base.scss';
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-.gk-<%= kebabCaseName %> {
+.gk-module {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 @media screen and (min-width: $ipad-portrait-breakpoint){
-  .gk-<%= kebabCaseName %> {
+  .gk-module {
   }  
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 @media screen and (min-width: $layout-breakpoint){
-  .gk-<%= kebabCaseName %> {
+  .gk-module {
   }  
 }

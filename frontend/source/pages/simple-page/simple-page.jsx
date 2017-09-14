@@ -1,17 +1,27 @@
 import React from 'react'
-import GkComponent from '<%= folderLevels %>../component'
+import { connect } from 'react-redux'
 
-import './<%= kebabCaseName %>.scss'
+import store from '../../store'
+
+import './simple-page.scss'
+import GkPage from '../page'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default class Gk<%= name %> extends GkComponent {
+@connect(( store ) => {
+  return {
+  }
+} )
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+export default class GkSimplePage extends GkPage {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   constructor( props ) {
     super( props );
-    this.displayName = 'Gk<%= name %>';
+    this.displayName = 'GkSimplePage';
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19,10 +29,10 @@ export default class Gk<%= name %> extends GkComponent {
   render() {
     return (
 
-      <div className="gk-<%= kebabCaseName %> gk-component">
+      <div className={`gk-simple-page gk-page ${ this.state.beforeEnter ? 'gk-page--before-enter' : '' }`}>
       </div>
 
-    )
+    );
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

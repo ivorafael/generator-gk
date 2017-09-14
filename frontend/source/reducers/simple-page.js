@@ -2,7 +2,7 @@ export default function reducer( state = {
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  <%= camelCaseName %>: null,
+  simplePage: null,
   fetching: false,
   fetched: false,
   fetchingError: null
@@ -14,10 +14,10 @@ export default function reducer( state = {
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
 
-    case "FETCH_<%= upperCaseName %>": {
+    case "FETCH_SIMPLE_PAGE": {
       return {
         ...state,
-        <%= camelCaseName %>: null,
+        simplePage: null,
         fetching: true,
         fetched: false,
         fetchingError: null
@@ -26,10 +26,10 @@ export default function reducer( state = {
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
 
-    case "FETCH_<%= upperCaseName %>_SUCCESS": {
+    case "FETCH_SIMPLE_PAGE_SUCCESS": {
       return {
         ...state,
-        <%= camelCaseName %>: action.payload,
+        simplePage: action.payload,
         fetching: false,
         fetched: true,
         fetchingError: null
@@ -38,10 +38,10 @@ export default function reducer( state = {
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    case "FETCH_<%= upperCaseName %>_ERROR": {
+    case "FETCH_SIMPLE_PAGE_ERROR": {
       return {
         ...state,
-        <%= camelCaseName %>: null,
+        simplePage: null,
         fetching: false,
         fetched: false,
         fetchingError: action.payload

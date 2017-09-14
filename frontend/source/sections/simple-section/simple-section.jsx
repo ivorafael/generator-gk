@@ -1,17 +1,27 @@
 import React from 'react'
-import GkComponent from '<%= folderLevels %>../component'
+import { connect } from 'react-redux'
 
-import './<%= kebabCaseName %>.scss'
+import store from '../../store'
+
+import './simple-section.scss'
+import GkSection from '../section'
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default class Gk<%= name %> extends GkComponent {
+@connect(( store ) => {
+  return {
+  }
+} )
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+export default class GkSimpleSection extends GkSection {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   constructor( props ) {
     super( props );
-    this.displayName = 'Gk<%= name %>';
+    this.displayName = 'GkSimpleSection';
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -19,8 +29,8 @@ export default class Gk<%= name %> extends GkComponent {
   render() {
     return (
 
-      <div className="gk-<%= kebabCaseName %> gk-component">
-      </div>
+      <section className="gk-simple-section gk-section">
+      </section>
 
     )
   }
