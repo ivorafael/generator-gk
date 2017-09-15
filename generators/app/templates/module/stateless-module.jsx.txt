@@ -1,15 +1,15 @@
-import React from 'react'
-import './raw-component.scss'
+import React from 'react'<% if (includeSCSS) { %>
+import './<%= kebabCaseName %>.scss'<% } %>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-const GkRawComponent = ( { data } ) => (
+const Gk<%= name %> = ( { data } ) => (
   
-  <div className="gk-raw-component gk-component">
+  <div className="gk-<%= kebabCaseName %> gk-module">
   </div>
   
 )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-export default GkRawComponent
+export default Gk<%= name %>

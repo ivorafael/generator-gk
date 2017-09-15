@@ -12,7 +12,7 @@ const mainPrompt = [
     type: 'list',
     name: 'actionType',
     message: 'What do you like to create?',
-    choices: [ 'Stateless Component', 'Component', 'Module', 'Section', 'Page', 'Model', 'Action', 'Reducer', 'Action & Reducer' ]
+    choices: [ 'Stateless Component', 'Component', 'Stateless Module', 'Module', 'Section', 'Page', 'Model', 'Action', 'Reducer', 'Action & Reducer' ]
   }, {
     type: 'input',
     name: 'itemName',
@@ -55,7 +55,7 @@ module.exports = class extends Generator {
 
       let promises = [];
 
-      if ( [ 'Stateless Component', 'Component', 'Module', 'Section', 'Page' ].indexOf( props.actionType ) >= 0 ) {
+      if ( [ 'Stateless Component', 'Component', 'Stateless Module', 'Module', 'Section', 'Page' ].indexOf( props.actionType ) >= 0 ) {
         return this.prompt( secondaryPrompt ).then( _props => {
           this.props = Object.assign( {}, this.props, _props );
 
@@ -107,52 +107,16 @@ module.exports = class extends Generator {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  _createComponent() {
+  _createDefaultItem( kind, stateless ) {
     const data = this._getData();
 
     this.fs.copyTpl(
-      this.templatePath( this.props.actionType === 'Component' ? 'component/component.jsx.txt' : 'component/stateless-component.jsx.txt' ),
-      this.destinationPath( `${ basePath }/components/${ data.destination }/${ data.kebabCaseName }.jsx` ), {
-        name: data.inputName,
-        kebabCaseName: data.kebabCaseName,
-        folderLevels: data.folderLevels
-      }
-    )
-
-    if ( this.props.includeTest ) {
-      this.fs.copyTpl(
-        this.templatePath( 'component/component.test.js.txt' ),
-        this.destinationPath( `${ basePath }/components/${ data.destination }/${ data.kebabCaseName }.test.js` ), {
-          name: data.inputName,
-          kebabCaseName: data.kebabCaseName,
-          folderLevels: data.folderLevels
-        }
-      )
-    }
-
-    if ( this.props.includeSCSS ) {
-      this.fs.copyTpl(
-        this.templatePath( 'component/component.scss.txt' ),
-        this.destinationPath( `${ basePath }/components/${ data.destination }/${ data.kebabCaseName }.scss` ), {
-          name: data.inputName,
-          kebabCaseName: data.kebabCaseName,
-          folderLevels: data.folderLevels
-        }
-      )
-    }
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  _createDefaultItem( kind ) {
-    const data = this._getData();
-
-    this.fs.copyTpl(
-      this.templatePath( `${ kind }/${ kind }.jsx.txt` ),
+      this.templatePath( `${ kind }/${ stateless ? 'stateless-' : '' }${ kind }.jsx.txt` ),
       this.destinationPath( `${ basePath }/${ kind }s/${ data.destination }/${ data.kebabCaseName }.jsx` ), {
         name: data.inputName,
         kebabCaseName: data.kebabCaseName,
-        folderLevels: data.folderLevels
+        folderLevels: data.folderLevels,
+        includeSCSS: this.props.includeSCSS
       }
     )
 
@@ -181,6 +145,11 @@ module.exports = class extends Generator {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  _createComponent( stateless = false ) {
+    this._createDefaultItem( 'component', stateless );
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   _createModel() {
     const data = this._getData();
 
@@ -196,8 +165,8 @@ module.exports = class extends Generator {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  _createModule() {
-    this._createDefaultItem( 'module' );
+  _createModule( stateless = false ) {
+    this._createDefaultItem( 'module', stateless );
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -255,11 +224,11 @@ module.exports = class extends Generator {
 
   writing() {
     if ( this.props.actionType === 'Component' || this.props.actionType === 'Stateless Component' ) {
-      this._createComponent();
+      this._createComponent( this.props.actionType === 'Stateless Component' );
     }
 
-    if ( this.props.actionType === 'Module' ) {
-      this._createModule();
+    if ( this.props.actionType === 'Module' || this.props.actionType === 'Stateless Module' ) {
+      this._createModule( this.props.actionType === 'Stateless Module' );
     }
 
     if ( this.props.actionType === 'Section' ) {
